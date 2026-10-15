@@ -3,6 +3,10 @@
 
 > **기업 평시 여비 거버넌스(FinOps), 지진·재해 BCP 모빌리티 오케스트레이터 및 시계열 군중 분산(Crowd-Balancing) 엔진**
 
+### 🌐 Google Cloud Run 공식 배포 URL
+* **실시간 웹 관제 대시보드 (Live Web URL)**: **[https://resiliroute-1048978192076.asia-northeast1.run.app/](https://resiliroute-1048978192076.asia-northeast1.run.app/)**
+* **인터랙티브 API 명세서 (Swagger Docs)**: **[https://resiliroute-1048978192076.asia-northeast1.run.app/docs](https://resiliroute-1048978192076.asia-northeast1.run.app/docs)**
+
 ---
 
 ## 1. 프로젝트 개요 (Executive Summary)
