@@ -1,0 +1,235 @@
+# 駅すぱあと API
+
+> 「駅すぱあと API」は、株式会社ヴァル研究所が提供する公共交通機関の経路探索サービスです。電車やバス、飛行機、船などの様々な交通手段に対応し、経路探索、運賃計算、時刻表、駅情報など、移動に関わる豊富なデータと機能をAPI形式で提供します。
+
+- [トップページ](https://docs.ekispert.com/v1/): 「駅すぱあと API」ドキュメントサイトのトップページ。
+
+## Get Started
+- [Get Started](https://docs.ekispert.com/v1/get-started/): 「駅すぱあと API」ドキュメントサイトの導入。
+- [ご利用の手引き](https://docs.ekispert.com/v1/get-started/guide/): 「駅すぱあと API」をご利用いただくまでの手順。
+- [利用上の注意](https://docs.ekispert.com/v1/get-started/attention/): 「駅すぱあと API」を利用する上での技術的な注意事項。このページは「駅すぱあと API」を扱う際に必ず確認すること。
+- [評価版の制限事項](https://docs.ekispert.com/v1/get-started/restriction/): 「駅すぱあと API スタンダードプラン」の評価版に設けられている制限事項。
+- [課金対象外のAPI一覧](https://docs.ekispert.com/v1/get-started/no-charge-api-list/): 有償機能となるAPIの中で、利用しても課金が発生しない機能の一覧。
+- [評価版のお申込み（90日間無料）](https://api-info.ekispert.com/form/trial/): 「駅すぱあと API スタンダードプラン」評価版利用お申し込みフォーム。
+
+## API
+- [API概要](https://docs.ekispert.com/v1/api/): 「駅すぱあと API」のエンドポイント、仕様、エラーコードなどの全体概要。
+
+> 各APIのパスは、ドキュメントのURL `https://docs.ekispert.com/v1/api/{APIパスの文字列}.html` に対応しています。（例: APIパス `/search/course/extreme` のドキュメントは `https://docs.ekispert.com/v1/api/search/course/extreme.html`）
+
+### 探索
+- [経路探索](https://docs.ekispert.com/v1/api/search/course/extreme.html): 指定された駅もしくは地点間の、公共交通機関を利用した経路を探索。出発・経由・到着地の指定や、平均待ち時間による探索／ダイヤによる探索の切り替えに対応した、最も高機能な経路探索。
+- [前後のダイヤ探索](https://docs.ekispert.com/v1/api/search/course/pattern.html): 指定された経路シリアライズデータと区間インデックスを元に、その区間以降の経路の前後のダイヤを探索。ダイヤによる探索の経路シリアライズデータが対象（平均待ち時間による探索のものは利用不可）。
+- [範囲探索](https://docs.ekispert.com/v1/api/search/multipleRange.html): 駅コードや駅の名称で指定された鉄道駅を起点とし、上限値（分）の範囲内の鉄道駅を探索。起点を最大5件まで指定でき、起点ごとに所要時間や乗換回数の上限を設定できる。
+- [範囲探索(旧版)](https://docs.ekispert.com/v1/api/search/range.html): 1件の鉄道駅を起点とし、上限値（分）の範囲内の鉄道駅を探索。複数起点に対応した範囲探索の旧版にあたり、新規利用は非推奨。
+- [経路簡易探索](https://docs.ekispert.com/v1/api/search/course.html): 少ないパラメータで条件指定を簡易的に行える経路探索。
+- [平均待ち時間バスのみ探索](https://docs.ekispert.com/v1/api/search/course/bus.html): バスの利用に限定した、時刻表を用いない平均待ち時間による経路探索。
+- [平均待ち時間探索](https://docs.ekispert.com/v1/api/search/course/plain.html): 時刻表を用いない、平均待ち時間による探索のみの経路探索。
+
+### 駅の情報
+- [駅情報](https://docs.ekispert.com/v1/api/station.html): 駅の名称・駅コード・都道府県・交通種別などの条件に当てはまる駅の詳細情報を取得。
+- [駅簡易情報](https://docs.ekispert.com/v1/api/station/light.html): 指定された条件に当てはまる駅の簡易情報を取得。候補駅の確定を想定し、必要最低限のデータのみ返す軽量版。
+- [緯度経度からの周辺駅検索](https://docs.ekispert.com/v1/api/geo/station.html): 座標から駅の情報を取得。半径を指定することで中心座標から一定距離の駅を取得できる。
+- [住所情報からの周辺駅検索](https://docs.ekispert.com/v1/api/address/station.html): 指定した住所から駅の情報を取得。半径を指定することで住所から一定距離内の駅を取得できる。
+- [区間の駅情報](https://docs.ekispert.com/v1/api/course/station.html): 経路シリアライズデータの区間から、停車駅一覧を取得。列車の確定が必要なため、平均待ち時間による探索の経路シリアライズデータは利用不可。
+- [通過駅情報](https://docs.ekispert.com/v1/api/course/passStation.html): 経路シリアライズデータの経路もしくは区間から、通過する駅と停車する駅の一覧を取得。
+- [列車等の停車駅情報](https://docs.ekispert.com/v1/api/course/trainStation.html): 経路シリアライズデータの区間・列車で特定した列車等の停車駅一覧を取得。
+
+### 付加情報
+- [駅付加情報](https://docs.ekispert.com/v1/api/station/info.html): 指定した駅の付加情報を種別で指定して取得。乗り入れ路線・最寄路線・福祉施設・出口案内標識に対応。
+
+### 路線の情報
+- [運行路線情報](https://docs.ekispert.com/v1/api/operationLine.html): 「駅すぱあと」の保持する運行路線の情報（鉄道のみ）を取得。運行路線コードでの特定や、名称の前方一致による絞り込みができる。
+- [平均路線情報](https://docs.ekispert.com/v1/api/rail.html): 「駅すぱあと」の保持する平均路線の情報を取得。名称の前方一致による絞り込みができる。
+
+### 会社の情報
+- [会社情報](https://docs.ekispert.com/v1/api/corporation.html): 会社の情報を取得。会社の旧名称を指定すると新名称を取得できる。
+
+### ツール
+- [地点生成](https://docs.ekispert.com/v1/api/toolbox/course/point.html): 経路探索の出発・経由・到着地として指定できる地点データを生成。
+- [測地系変換](https://docs.ekispert.com/v1/api/toolbox/geo/convert.html): 座標の測地系を日本測地系と世界測地系で相互に変換。
+- [探索条件生成](https://docs.ekispert.com/v1/api/toolbox/course/condition.html): リクエストパラメータを元に、経路探索で利用する詳細な探索条件を生成。
+- [経路情報の更新判定](https://docs.ekispert.com/v1/api/toolbox/course/update.html): 指定された駅・平均路線・会社について、名称変更や削除などの更新状態と、指定日に利用可能かを判定。
+
+### 経路の運賃計算操作
+- [定期券の払い戻し計算](https://docs.ekispert.com/v1/api/course/repayment.html): 経路シリアライズデータを元に、払い戻し計算のもととなる定期券の組み合わせを複数取得。
+- [定期代の分割計算](https://docs.ekispert.com/v1/api/course/teiki/divided.html): 経路シリアライズデータを元に、経路の定期代を分割計算。
+- [運賃の分割計算](https://docs.ekispert.com/v1/api/course/fare/divided.html): 経路シリアライズデータを元に、経路の運賃を分割計算。
+- [探索結果の運賃切り替え](https://docs.ekispert.com/v1/api/course/recalculate.html): 経路シリアライズデータを元に、利用運賃・利用料金・車両・定期券種別などを切り替えて運賃を再計算。
+
+### 経路探索結果の操作
+- [経路の再現／定期券・指定列車利用](https://docs.ekispert.com/v1/api/course/edit.html): 経路シリアライズデータを利用した各種経路の操作。指定パラメータの組み合わせにより、経路の再現、定期券経路・回数券の適用、指定区間の列車置き換えなどを行う。
+
+### 経路探索結果の生成
+- [経路の生成](https://docs.ekispert.com/v1/api/course/create.html): 特急列車時刻表・鉄道駅時刻表・区間時刻表の結果から得られる「列車等を特定するコード」を利用し、駅・列車・日付・時刻を指定して任意の経路を生成。
+
+### 経路のシェイプ情報
+- [経路探索結果のシェイプ情報](https://docs.ekispert.com/v1/api/course/shape.html): 経路シリアライズデータから、地図に経路をポリライン描画するためのシェイプ情報を取得。鉄道は線路に沿った曲線、それ以外は通過駅・停車駅粒度の直線的なシェイプとなる。
+
+### 時刻表
+- [鉄道駅時刻表](https://docs.ekispert.com/v1/api/operationLine/timetable.html): 駅と方面を指定して鉄道運行路線の時刻表を取得。曜日区分の指定や列車情報の付加に対応した機能拡張版。
+- [鉄道駅時刻表(旧版)](https://docs.ekispert.com/v1/api/station/timetable.html): 駅と方面を指定して鉄道駅の時刻表を取得。機能を拡張した鉄道駅時刻表の旧版にあたり、新規利用は非推奨。
+- [鉄道駅時刻表の列車情報](https://docs.ekispert.com/v1/api/station/timetable/train.html): 鉄道駅時刻表の結果から得られる「列車等を特定するコード」を指定し、その列車の詳細情報を取得。
+- [区間時刻表](https://docs.ekispert.com/v1/api/course/timetable.html): 経路シリアライズデータの区間から時刻表を取得。鉄道のみで利用可。
+- [区間時刻表の列車情報](https://docs.ekispert.com/v1/api/course/timetable/train.html): 区間時刻表の結果から得られる「列車等を特定するコード」を指定し、その列車の詳細情報を取得。
+- [航空路線時刻表](https://docs.ekispert.com/v1/api/plane/timetable.html): 交通種別が飛行機の路線の時刻表を取得。
+- [航海路線時刻表](https://docs.ekispert.com/v1/api/ship/timetable.html): 交通種別が船の路線の時刻表を取得。
+- [バス路線時刻表](https://docs.ekispert.com/v1/api/bus/timetable.html): 2点間のバス停から時刻表を取得。
+- [特急列車時刻表](https://docs.ekispert.com/v1/api/train/timetable.html): 有料特急・有料急行・新幹線・寝台列車を対象に、運行区間一覧と時刻表を取得。
+
+### 回数券
+- [回数券一覧](https://docs.ekispert.com/v1/api/coupon/list.html): 「駅すぱあと」の保持する回数券の一覧を取得。回数券名称で絞り込みでき、得られた名称を回数券詳細に渡して詳細を取得する。
+- [回数券詳細](https://docs.ekispert.com/v1/api/coupon/detail.html): 「駅すぱあと」の保持する回数券の詳細な情報を取得。回数券一覧で得た回数券の名称、または経路シリアライズデータを指定して詳細を取得する。
+
+### 路線図
+
+> 下記の路線図関連のAPIの利用は現在非推奨であり、「駅すぱあと路線図」の利用を推奨しています。詳細はToolsの「ツール一覧」のページを参照してください。
+
+- [路線図一覧](https://docs.ekispert.com/v1/api/railmap/list.html): 路線図の一覧を取得。駅コードや駅の名称を指定すると、その駅が存在する最も詳細な路線図の情報を取得できる。
+- [路線図画像](https://docs.ekispert.com/v1/api/railmap/data.html): 「駅すぱあと」が保持する路線図の画像を取得。
+- [路線図駅情報](https://docs.ekispert.com/v1/api/railmap/detail.html): 路線図上の駅情報を取得。路線図IDと、駅または路線図上の座標範囲を指定して取得する。
+
+### 鉄道運行情報
+- [鉄道運行情報（レスキューナウ）](https://docs.ekispert.com/v1/api/operationLine/service/rescuenow/information.html): レスキューナウ提供の鉄道運行情報を取得。都道府県や会社で絞り込みできる。
+
+### バージョン情報
+- [データバージョン](https://docs.ekispert.com/v1/api/dataversion.html): 「駅すぱあと」のデータのバージョンや有効期間などの詳細情報を取得。
+
+## Tools
+- [ツール一覧](https://docs.ekispert.com/v1/tools/): 「駅すぱあと API」の利用を補助する管理ツールやお役立ちツールの紹介。
+
+### 管理ツール
+- [User Console](https://docs.ekispert.com/v1/tools/user-console/): アクセスキーごとのリクエスト数や改訂情報を確認できる管理画面。
+- [アクセス数 API](https://docs.ekispert.com/v1/tools/usage-api/): アクセスキーごとにリクエスト数を取得できるAPI。評価版・フリープランのアクセスキーでは利用不可。
+- [改訂情報 API](https://docs.ekispert.com/v1/tools/releasenote-api/): 「駅すぱあと」の改訂情報を取得できるAPI。評価版・フリープランのアクセスキーでは利用不可。
+
+### お役立ちツール
+- [駅すぱあと API Playground](https://api-playground.ekispert.jp/): アクセスキーや開発環境なしで「駅すぱあと API」を試せるツール。
+- [API Tester](https://docs.ekispert.com/v1/tools/api-tester/): 「駅すぱあと API スタンダードプラン」で提供しているAPIを直接実行し、レスポンスを確認できるツール。
+
+## Sample
+- [サンプルコード案内](https://docs.ekispert.com/v1/sample/): APIを活用したサンプルコードや、「定期券控除の経路表示」をテーマにしたプラクティスなどをGithubにて公開。
+
+## For AI
+- [For AI](https://docs.ekispert.com/v1/for-ai/): 「駅すぱあと API」および本ドキュメントをAIと組み合わせて活用する方法をまとめたページ。
+- [AIに本ドキュメントを参照させる方法](https://docs.ekispert.com/v1/for-ai/ai-reference/): llms.txtを活用して「駅すぱあと API」のドキュメント情報をAIに参照させる方法の紹介。
+- [駅すぱあと API MCPサーバー](https://docs.ekispert.com/v1/for-ai/mcp-server/): MCPサーバー経由でAIエージェントから「駅すぱあと API」の経路探索・駅情報取得などの機能を利用する方法の概要。
+
+## Dictionary
+- [Dictionary概要](https://docs.ekispert.com/v1/dictionary/): 「駅すぱあと API」で使われる用語の一覧。
+- [アクセスキー](https://docs.ekispert.com/v1/dictionary/access-key/): 「駅すぱあと API」のご利用時に、お客様を識別するための文字列。
+- [運行情報](https://docs.ekispert.com/v1/dictionary/service-information/): 交通機関の遅延や運休、平常復帰等の情報。
+- [運行路線](https://docs.ekispert.com/v1/dictionary/service-rail/): 駅から駅までの線路の区分けからなる「路線」の概念。
+- [運行路線コード](https://docs.ekispert.com/v1/dictionary/operation-line-code/): 運行路線のコード。
+- [駅](https://docs.ekispert.com/v1/dictionary/station/): 「駅すぱあと」の概念上の駅は、一般的に言われる鉄道の駅だけではなく、鉄道駅、空港、港、バス停留所/ターミナルを指す。
+- [駅コード](https://docs.ekispert.com/v1/dictionary/station-code/): 駅に対してユニークに振られたコード。
+- [駅の状態](https://docs.ekispert.com/v1/dictionary/station-state/): 経路の区間における発駅もしくは着駅の状態を表す値。
+- [駅の名称](https://docs.ekispert.com/v1/dictionary/station-name/): 「駅すぱあと」で定義している駅の名称。
+- [EX予約/スマートEX](https://docs.ekispert.com/v1/dictionary/express-reservation-service/): EX予約とスマートEXをまとめて「駅すぱあと」が定義した料金計算についての説明。
+- [オフピーク定期](https://docs.ekispert.com/v1/dictionary/offpeak-teiki/): ＪＲ東日本が販売する平日朝のピーク時間帯以外に利用できる、通常の通勤定期券より割安な定期券。
+- [会社](https://docs.ekispert.com/v1/dictionary/corporation/): 「駅すぱあと」が収録している交通機関の事業者。
+- [軌道種別](https://docs.ekispert.com/v1/dictionary/track-type/): 区間の出発駅の軌道種別。
+- [金額種別](https://docs.ekispert.com/v1/dictionary/money-type/): 金額の種類。
+- [見込の金額](https://docs.ekispert.com/v1/dictionary/forecasted-amount/): 「駅すぱあと」が独自に予測した運賃改定後の暫定金額。確定情報が揃うまでの予測値であるため、後に変わる場合がある。
+- [区間インデックス](https://docs.ekispert.com/v1/dictionary/section-index/): 経路探索によって得られた1つの経路の中で、何番目の区間であるかを示すインデックス。
+- [区間変更](https://docs.ekispert.com/v1/dictionary/repayment-teiki-in-section/): 同一鉄道会社内において定期券の利用区間を変更する場合に、旧区間定期券払い戻しと新区間定期券の購入を同時に行う手続き。
+- [経路情報の更新判定のステータスコード](https://docs.ekispert.com/v1/dictionary/course-update-status-code/): 経路情報の更新判定を利用することで、名称が変更された、削除されたなどの情報を確認できる。
+- [経路シリアライズデータ](https://docs.ekispert.com/v1/dictionary/course-serialize-data/): 経路探索結果の1経路を再現するための情報。
+- [交通種別](https://docs.ekispert.com/v1/dictionary/type/): 駅や路線、会社などの交通種別。
+- [コミュニティバス](https://docs.ekispert.com/v1/dictionary/community-bus/): 主に地方自治体によって運営されるバス。
+- [座標情報](https://docs.ekispert.com/v1/dictionary/coordinate-information/): リクエストパラメータとしての座標情報。
+- [住所情報](https://docs.ekispert.com/v1/dictionary/address-information/): リクエストパラメータとしての住所情報。
+- [詳細路線種別](https://docs.ekispert.com/v1/dictionary/detail-rail-type/): 路線の詳細な交通種別。
+- [乗車位置情報](https://docs.ekispert.com/v1/dictionary/change/): 次の路線への乗り換えに便利な乗車位置の情報。
+- [情報提供元](https://docs.ekispert.com/v1/dictionary/provider/): 「駅すぱあと API」に搭載されている情報の情報提供元。
+- [シリアライズデータ](https://docs.ekispert.com/v1/dictionary/serialize-data/): 経路を再現するためのデータの総称。経路シリアライズデータ・定期経路シリアライズデータなどの種類がある。
+- [新幹線eチケット](https://docs.ekispert.com/v1/dictionary/shinkansen-e-ticket-service/): 新幹線eチケットサービスにおける基本乗車プラン。
+- [ダイヤによる探索](https://docs.ekispert.com/v1/dictionary/search-course-by-diagram/): 時刻表のダイヤから経路を探索。
+- [探索種別](https://docs.ekispert.com/v1/dictionary/search-type/): 経路探索などで使用する探索方法の種別。
+- [定期経路シリアライズデータ](https://docs.ekispert.com/v1/dictionary/teiki-serialize-data/): 定期経路のシリアライズデータ。
+- [定期経路文字列](https://docs.ekispert.com/v1/dictionary/teiki-detail-route/): 定期経路の文字列データ。
+- [定期区間控除](https://docs.ekispert.com/v1/dictionary/teiki-deduction/): 経路探索や経路再現時に定期情報が指定された場合に、定期情報から再現した定期経路（定期区間）が正常に割り当たった区間に対して、運賃を控除すること。
+- [定期券の種類](https://docs.ekispert.com/v1/dictionary/pass-class/): 定期券の種類（二区間定期券、区間外定期、平日限定定期、全線定期）。
+- [定期払い戻し](https://docs.ekispert.com/v1/dictionary/teiki-repayment/): 鉄道及びバス会社の定期券の払い戻しを行った際の金額を計算。
+- [定期情報](https://docs.ekispert.com/v1/dictionary/teiki-route-data/): 定期経路の情報が内包されているデータ。
+- [定期割り当てステータスコード](https://docs.ekispert.com/v1/dictionary/teiki-assign-status/): 探索経路に定期経路を割り当てた結果。
+- [定期情報の更新判定ステータスコード](https://docs.ekispert.com/v1/dictionary/teiki-require-update/): 定期券情報の更新が必要か確認。
+- [出口](https://docs.ekispert.com/v1/dictionary/gate/): 「駅すぱあと」が収録している、経路探索系で利用可能な出口。
+- [出口案内標識](https://docs.ekispert.com/v1/dictionary/exit/): 「駅すぱあと」が収録している駅に紐づく出口の案内標識の情報。
+- [出口グループ](https://docs.ekispert.com/v1/dictionary/gate-group/): 経路探索系で出口を利用する際に、 出口の選択が効率的に行えるように、乗車可能な路線の組み合わせをベースにして出口をグループ化したもの。
+- [出口コード](https://docs.ekispert.com/v1/dictionary/gate-code/): 出口に対してユニークに振られたコード。
+- [都道府県コード](https://docs.ekispert.com/v1/dictionary/prefecture-code/): 都道府県に紐づいたコード。
+- [乗り換え手段種別](https://docs.ekispert.com/v1/dictionary/change-means-type/): 乗車位置情報の乗り換え手段種別。
+- [平均待ち時間による探索](https://docs.ekispert.com/v1/dictionary/search-course-by-average-time/): 時刻表を加味しないで目的地への色々な経路を探索。
+- [平均路線](https://docs.ekispert.com/v1/dictionary/average-rail/): 平均時間探索で使用される、列車の運行からなる「路線」の概念。
+- [列車等を特定するコード](https://docs.ekispert.com/v1/dictionary/code-for-specifying-train/): 列車を特定するための二種類のコード。
+- [路線記号](https://docs.ekispert.com/v1/dictionary/line-symbol/): 路線を表す記号。重複する記号も存在する。
+- [路線記号コード](https://docs.ekispert.com/v1/dictionary/line-symbol-code/): 路線記号を識別するためのコード。
+
+## Tips
+- [Tips 概要](https://docs.ekispert.com/v1/tips/): APIのよくある利用方法や応用例を紹介する実践的なガイド。
+
+### 定期券
+#### 交通費精算（定期区間控除）
+- [定期情報の取得](https://docs.ekispert.com/v1/tips/create-teiki/): 定期情報の作成方法。
+- [定期情報の更新](https://docs.ekispert.com/v1/tips/update-teiki/): 定期券情報が最新かを確認し、更新する方法。
+- [定期券利用時の運賃計算](https://docs.ekispert.com/v1/tips/fare-calculate-at-using-teiki/): 経路探索または経路の再現／定期券・指定列車利用を利用して、定期区間控除を行う方法。
+- [二区間定期券などの特殊な定期券利用時の運賃計算](https://docs.ekispert.com/v1/tips/fare-calculate-at-using-special-teiki/): 複数の種類の定期券を組み合わせた場合の運賃を計算する方法。
+
+#### 通勤費管理（定期代支給）
+- [定期券の払い戻し額を調べる](https://docs.ekispert.com/v1/tips/calc-repayment-teiki/): 定期券の払い戻し額を計算する方法。
+- [定期情報の更新](https://docs.ekispert.com/v1/tips/update-teiki/): 定期券情報が最新かを確認し、更新する方法。
+- [鉄道会社ごとの定期券払い戻し額を調べる](https://docs.ekispert.com/v1/tips/calc-repayment-teiki-dividedly/): 複数の鉄道会社にまたがる定期券について、経路を分割しそれぞれの区間ごとに払い戻し額を計算する方法。
+- [定期券種別を指定して定期代を取得する](https://docs.ekispert.com/v1/tips/get-specific-teiki-type-price/): 通勤、通学定期など種別を指定して定期代を調べる方法。
+- [二区間定期券などの特殊な定期券の定期代を調べる](https://docs.ekispert.com/v1/tips/get-special-teiki-price/): 二区間定期券が存在する経路の場合に、二区間定期券として定期代を取得する方法。
+- [オフピーク定期券の定期代を調べる](https://docs.ekispert.com/v1/tips/get-offpeak-teiki-price/): オフピーク定期区間が存在する経路の場合に、オフピーク定期券として定期代を取得する方法。
+
+### 探索
+#### 運賃
+- [往復運賃を取得したい](https://docs.ekispert.com/v1/tips/get-course-for-round-fare/): 経路の往復運賃を取得する方法。
+- [探索結果をIC運賃で取得したい](https://docs.ekispert.com/v1/tips/get-course-for-ic-fare/): デフォルトで普通乗車券が出力されるPrice要素に、IC運賃を出力する方法。
+- [運賃が運賃改定に対応しているか判定する](https://docs.ekispert.com/v1/tips/judge-revision/): 探索結果の金額が運賃改定に対応しているか確認する方法。
+- [経路探索に回数券を利用する](https://docs.ekispert.com/v1/tips/use-coupon/): 経路探索で回数券を利用する方法。
+
+#### 探索結果
+- [探索結果から前の時刻、次の時刻の探索結果を取得する](https://docs.ekispert.com/v1/tips/get-course-next-or-previous/): 経路探索結果を利用して、前の時間の最適なダイヤ、次の時間の最適なダイヤを再探索する方法。
+- [探索結果から前後のダイヤを取得する](https://docs.ekispert.com/v1/tips/get-bef-and-aft-dia/): ダイヤによる探索での経路探索結果を用いて、前後のダイヤを取得する方法。
+- [経路探索結果で「早・安・楽」の判定をしたい](https://docs.ekispert.com/v1/tips/sort-route-by-fast-cheap-easy/): 経路探索のレスポンスを利用して、「早・安・楽」経路を判定する方法。
+- [特急列車時刻表を利用して経路探索を行う](https://docs.ekispert.com/v1/tips/get-course-by-train-timetable/): 特急列車時刻表の結果を利用して、経路探索を行う方法。
+- [乗り換えしたくない駅を除外して経路探索を行う](https://docs.ekispert.com/v1/tips/get-course-set-interrupt-transfer-station/): 乗り換えしたくない駅を除外して経路探索を行う方法。
+- [探索結果からシェイプ情報を取得する](https://docs.ekispert.com/v1/tips/get-course-shape/): 経路探索結果を利用して、経路のシェイプ情報（地図に経路をポリライン描画するための情報）を取得する方法。
+
+#### 探索条件
+- [経路探索時に詳細な条件を設定する](https://docs.ekispert.com/v1/tips/set-config-when-search-course/): 新幹線や有料特急の利用有無など、詳細な条件を指定して経路探索する方法。
+- [バスを除外した経路探索](https://docs.ekispert.com/v1/tips/get-course-by-address-or-geo-point-excluding-bus/): 鉄道のみを利用する経路を探索する方法。
+
+#### 地点
+- [レスポンスの緯度経度を、日本測地系ではなく世界測地系で取得する](https://docs.ekispert.com/v1/tips/get-response-for-wgs84/): デフォルトでは日本測地系として出力される緯度経度を、世界測地系として出力する方法。
+- [職場や家など地点に名称を付けて経路探索を行う](https://docs.ekispert.com/v1/tips/create-point/): 「自宅」「会社」等、地点に名称を付けて経路探索をする方法。
+- [駅の出口の緯度経度を取得する](https://docs.ekispert.com/v1/tips/get-gate-by-station/): 鉄道駅の出口に関する緯度経度などの情報を取得する方法。
+- [緯度経度から最寄り出口を経由して経路探索する](https://docs.ekispert.com/v1/tips/get-course-by-geo-point-via-nearest-gate/): 緯度経度から最寄り駅を検索し、その駅にある最寄り出口を経由した経路探索する方法。
+
+#### 路線
+- [迂回経路探索する](https://docs.ekispert.com/v1/tips/get-course-set-interrupt/): 特定の路線を利用しない設定をすることで、迂回経路探索を行う方法。
+- [探索結果を元に迂回経路探索する](https://docs.ekispert.com/v1/tips/get-course-set-interrupt-by-course/): 一度経路探索した結果に対し、特定の路線を迂回して再探索する方法。
+
+### 駅
+- [駅情報・路線情報・会社情報を全件取得する](https://docs.ekispert.com/v1/tips/get-all-station/): 駅情報、運行路線情報、平均路線情報、会社情報では、`offset` パラメータを使用することで、情報を全件取得する方法。
+- [駅名・路線名・会社名の更新](https://docs.ekispert.com/v1/tips/update-old-name/): 交通事業者が駅名や路線名を変更し、駅すぱあとでも名称を変更した場合に名称を更新する方法。
+- [駅時刻表から停車駅を取得する](https://docs.ekispert.com/v1/tips/get-stop-station-for-station-timetable/): 鉄道駅時刻表に紐づく停車駅情報を取得する方法。
+- [経路探索で停車駅と発着時刻を取得する](https://docs.ekispert.com/v1/tips/get-stop-station-in-route/): 経路探索で停車駅と発着時刻を取得する方法。
+- [経路探索結果から通過駅・停車駅一覧を取得する](https://docs.ekispert.com/v1/tips/get-stop-and-pass-station-in-route/): 経路探索結果から、通過する駅と停車する駅の一覧を取得する方法。
+- [駅毎の時刻表を取得する](https://docs.ekispert.com/v1/tips/get-timetable-for-each-station/): 指定した駅、路線の時刻表を取得する方法。
+
+### 路線図
+
+> 下記の路線図関連のAPIの利用は現在非推奨であり、「駅すぱあと路線図」の利用を推奨しています。詳細はToolsの「ツール一覧」のページを参照してください。
+
+- [路線図の画像を取得する](https://docs.ekispert.com/v1/tips/get-railmap-data/): 指定したエリアの路線図画像を取得する方法。
+- [路線図の領域内に存在する駅名を取得する](https://docs.ekispert.com/v1/tips/get-railmap-detail/): 路線図の表示領域に含まれる駅を取得する方法。
+
+## FAQ
+- [FAQ](https://docs.ekispert.com/v1/faq/): よくある質問とその回答集。
+
+## 無料トライアル
+- [無料トライアル](https://api-info.ekispert.com/form/trial/): 「駅すぱあと API」の無料トライアルのお申込みフォーム。

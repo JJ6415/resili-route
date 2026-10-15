@@ -1,0 +1,433 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ResiliRoute v3.3: BCPモビリティ・オーケストレーター & FinOpsガバナンス</title>
+  <link rel="stylesheet" href="/static/css/style.css?v=20261015_04">
+  
+  <!-- Leaflet GIS Map CDN -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js"></script>
+
+  <!-- Three.js CDN for 3D Commander WebGL Avatar -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+
+  <style>
+    /* Critical UI Resets & Futuristic Cyber Glass Styles */
+    .command-bar-card {
+      background: linear-gradient(135deg, rgba(15, 23, 42, 0.95), rgba(30, 41, 59, 0.85)) !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4), inset 0 1px 0 rgba(255, 255, 255, 0.1) !important;
+      border-radius: 14px !important;
+      padding: 1.25rem !important;
+    }
+    .command-bar-header {
+      display: flex !important;
+      justify-content: space-between !important;
+      align-items: center !important;
+      margin-bottom: 0.85rem !important;
+    }
+    .command-bar-input-wrapper {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.65rem !important;
+      background: rgba(10, 15, 29, 0.95) !important;
+      border: 1.5px solid rgba(56, 189, 248, 0.3) !important;
+      border-radius: 12px !important;
+      padding: 0.45rem 0.65rem !important;
+      box-shadow: inset 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+    }
+    .command-bar-input-wrapper:focus-within {
+      border-color: #38bdf8 !important;
+      box-shadow: 0 0 20px rgba(56, 189, 248, 0.35), inset 0 2px 6px rgba(0, 0, 0, 0.5) !important;
+    }
+    button#micBtn.mic-btn {
+      all: unset !important;
+      box-sizing: border-box !important;
+      width: 44px !important;
+      height: 44px !important;
+      min-width: 44px !important;
+      background: rgba(56, 189, 248, 0.12) !important;
+      border: 1px solid rgba(56, 189, 248, 0.35) !important;
+      border-radius: 10px !important;
+      color: #38bdf8 !important;
+      font-size: 1.3rem !important;
+      display: flex !important;
+      align-items: center !important;
+      justify-content: center !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+    }
+    button#micBtn.mic-btn:hover {
+      background: rgba(56, 189, 248, 0.25) !important;
+      border-color: #38bdf8 !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 15px rgba(56, 189, 248, 0.4) !important;
+    }
+    button#micBtn.mic-btn.recording {
+      background: rgba(239, 68, 68, 0.25) !important;
+      border-color: #ef4444 !important;
+      color: #fca5a5 !important;
+      animation: mic-pulse 1s infinite alternate !important;
+    }
+    input#userChatInput.command-bar-input {
+      all: unset !important;
+      box-sizing: border-box !important;
+      flex: 1 !important;
+      background: transparent !important;
+      border: none !important;
+      color: #f8fafc !important;
+      font-size: 0.95rem !important;
+      font-family: inherit !important;
+      padding: 0.5rem 0.6rem !important;
+      outline: none !important;
+    }
+    input#userChatInput.command-bar-input::placeholder {
+      color: #64748b !important;
+      font-size: 0.88rem !important;
+    }
+    button#userChatBtn.command-send-btn {
+      all: unset !important;
+      box-sizing: border-box !important;
+      background: linear-gradient(135deg, #0284c7 0%, #2563eb 100%) !important;
+      border: 1px solid rgba(255, 255, 255, 0.15) !important;
+      color: #ffffff !important;
+      padding: 0.65rem 1.4rem !important;
+      border-radius: 9px !important;
+      font-weight: 700 !important;
+      font-size: 0.9rem !important;
+      letter-spacing: 0.5px !important;
+      cursor: pointer !important;
+      box-shadow: 0 4px 14px rgba(2, 132, 199, 0.4) !important;
+      transition: all 0.2s ease !important;
+      white-space: nowrap !important;
+      text-align: center !important;
+    }
+    button#userChatBtn.command-send-btn:hover {
+      filter: brightness(1.2) !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 6px 20px rgba(2, 132, 199, 0.6) !important;
+    }
+    .voice-status-banner {
+      display: none;
+      margin-top: 0.65rem;
+      padding: 0.45rem 0.85rem;
+      background: rgba(239, 68, 68, 0.12);
+      border: 1px solid rgba(239, 68, 68, 0.4);
+      border-radius: 8px;
+      font-size: 0.78rem;
+      color: #fca5a5;
+      align-items: center;
+      gap: 0.6rem;
+    }
+    .voice-status-banner.active {
+      display: flex !important;
+    }
+    .prompt-chips-container {
+      display: flex !important;
+      align-items: center !important;
+      gap: 0.5rem !important;
+      margin-top: 0.85rem !important;
+      flex-wrap: wrap !important;
+    }
+    button.prompt-chip {
+      all: unset !important;
+      box-sizing: border-box !important;
+      background: rgba(30, 41, 59, 0.8) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      border-radius: 9999px !important;
+      padding: 0.35rem 0.85rem !important;
+      font-size: 0.76rem !important;
+      font-weight: 500 !important;
+      color: #cbd5e1 !important;
+      cursor: pointer !important;
+      transition: all 0.2s ease !important;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.4rem !important;
+      white-space: nowrap !important;
+    }
+    button.prompt-chip:hover {
+      background: rgba(56, 189, 248, 0.2) !important;
+      border-color: #38bdf8 !important;
+      color: #ffffff !important;
+      transform: translateY(-2px) !important;
+      box-shadow: 0 4px 14px rgba(56, 189, 248, 0.3) !important;
+    }
+    .view-tabs {
+      display: inline-flex !important;
+      gap: 0.35rem !important;
+      background: rgba(10, 15, 29, 0.85) !important;
+      border: 1px solid rgba(255, 255, 255, 0.12) !important;
+      padding: 0.3rem !important;
+      border-radius: 10px !important;
+      box-shadow: inset 0 2px 4px rgba(0, 0, 0, 0.3) !important;
+    }
+    button.view-tab-btn {
+      all: unset !important;
+      box-sizing: border-box !important;
+      background: transparent !important;
+      border: 1px solid transparent !important;
+      color: #94a3b8 !important;
+      padding: 0.45rem 1rem !important;
+      border-radius: 8px !important;
+      font-size: 0.8rem !important;
+      font-weight: 600 !important;
+      cursor: pointer !important;
+      transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1) !important;
+      display: inline-flex !important;
+      align-items: center !important;
+      gap: 0.45rem !important;
+      white-space: nowrap !important;
+    }
+    button.view-tab-btn:hover {
+      color: #e2e8f0 !important;
+      background: rgba(255, 255, 255, 0.05) !important;
+    }
+    button.view-tab-btn.active {
+      background: linear-gradient(135deg, rgba(56, 189, 248, 0.25), rgba(2, 132, 199, 0.3)) !important;
+      color: #38bdf8 !important;
+      border: 1px solid rgba(56, 189, 248, 0.5) !important;
+      box-shadow: 0 2px 10px rgba(56, 189, 248, 0.25) !important;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="brand">
+      <div class="logo-badge">ResiliRoute</div>
+      <div>
+        <h1>BCP Mobility Orchestrator</h1>
+        <span class="subtitle">FinOps 旅費ガバナンス＆災害時系列群衆分散エンジン v3.3</span>
+      </div>
+    </div>
+    <div class="header-status">
+      <div style="font-size: 0.75rem; color: #94a3b8; font-family: var(--font-mono);">
+        キャッシュアダプター: <span id="cacheBackendText" style="color: #38bdf8;">VertexAIMobilityCache (Enterprise)</span>
+      </div>
+      <div id="statusPill" class="status-pill">
+        <span class="pulse-dot"></span>
+        <span id="statusPillText">NORMAL FINOPS ACTIVE (平時旅費ガバナンス)</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Simulation Control Deck -->
+  <section class="sim-deck">
+    <div class="sim-deck-title">
+      <span>🎮 Mobility & Disaster Simulation Deck (審査員ワンクリック実証制御パネル)</span>
+      <span style="font-size: 0.72rem; font-weight: normal; color: #64748b;">100% Non-Mock 実際HTTPパケット＆エンジンランタイム検証</span>
+    </div>
+    <div class="sim-buttons-grid">
+      <!-- Button 1 -->
+      <button class="sim-btn finops-trigger" data-scenario="1" onclick="triggerScenario(1)">
+        <span class="btn-title">🚄 【ボタン1: 平時新幹線出張申請】</span>
+        <span class="btn-desc">田中主任 グリーン車申請 ──▶ Ekispert規程照合 ──▶ 普通車指定席 4,470円削減承認</span>
+      </button>
+
+      <!-- Button 2 -->
+      <button class="sim-btn bcp-trigger" data-scenario="2" onclick="triggerScenario(2)">
+        <span class="btn-title">🚨 【ボタン2: 緊急地震速報 J-Alert】</span>
+        <span class="btn-desc">首都圏 震度6強 Webhook ──▶ 0.1秒 BCP緊急切替 ──▶ 新宿駅ボトルネック 0.92＆社員120名 3ルート分散</span>
+      </button>
+
+      <!-- Button 3 -->
+      <button class="sim-btn stranded-trigger" data-scenario="3" onclick="triggerScenario(3)">
+        <span class="btn-title">🛡️ 【ボタン3: 外勤帰宅困難者救援】</span>
+        <span class="btn-desc">六本木 鉄道麻痺・道路孤立 ──▶ 300m 提携耐震避難所マッチング ──▶ ターンバイターン＆入館QR発行</span>
+      </button>
+
+      <!-- Reset Button -->
+      <button class="sim-btn reset-trigger" onclick="resetSystem()">
+        <span class="btn-title">🔄 リセット</span>
+        <span class="btn-desc">平時復帰</span>
+      </button>
+    </div>
+  </section>
+
+  <!-- Main Dashboard Grid -->
+  <main class="dashboard-container">
+    
+    <!-- Left Column: Primary Command & GIS Map & Trajectory -->
+    <div class="grid-col">
+      
+      <!-- [左上メイン配置] AI音声＆自然言語管制バー (Google Cloud TTS + Browser STT + Cloud DLP) -->
+      <div class="glass-card command-bar-card">
+        <div class="command-bar-header">
+          <div class="card-title">
+            <span style="color: #38bdf8;">🎙️ AIモビリティ 音声＆自然言語管制センター</span>
+          </div>
+          <span class="card-badge" style="color: #38bdf8; border-color: rgba(56, 189, 248, 0.4);">
+            Google Cloud TTS & DLP 連携
+          </span>
+        </div>
+
+        <div class="command-bar-input-wrapper">
+          <button type="button" id="micBtn" class="mic-btn" title="音声認識(STT)を開始 (クリックしてお話しください)">
+            🎤
+          </button>
+          <input 
+            type="text" 
+            id="userChatInput" 
+            class="command-bar-input" 
+            placeholder="出張申請や緊急災害SOSを自然言語（音声またはテキスト）で入力してください..." 
+          />
+          <button type="button" id="userChatBtn" class="command-send-btn">送信</button>
+        </div>
+
+        <!-- Voice recording active indicator -->
+        <div id="voiceStatusBanner" class="voice-status-banner">
+          <span class="pulse-dot"></span>
+          <span id="voiceStatusText">音声を認識中... お話しください。</span>
+        </div>
+
+        <!-- 1-Click Quick Template Chips -->
+        <div class="prompt-chips-container">
+          <span style="font-size: 0.72rem; color: #64748b; font-weight: 600;">クイック入力例:</span>
+          <button type="button" class="prompt-chip" onclick="fillPrompt('来週火曜日に東京から新大阪への出張ですが、のぞみグリーン車で手配してください。法人カード 4520-1122-3344-9988')">
+            🚄 東京〜新大阪 のぞみグリーン車出張申請
+          </button>
+          <button type="button" class="prompt-chip" onclick="fillPrompt('六本木ヒルズ付近で外出ミーティング終了後に地下鉄全面運休のため道路で孤立しました。避難所の案内をお願いします。')">
+            🚨 六本木 道路孤立 緊急救護SOS
+          </button>
+          <button type="button" class="prompt-chip" onclick="fillPrompt('新宿本社 社員120名 緊急避難回廊編成指令を発令')">
+            🏢 新宿本社 全員避難回廊編成指令
+          </button>
+        </div>
+      </div>
+
+      <!-- Card: GIS Map & Tri-Line Trajectory Dual Viewer with Tabs -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="view-tabs">
+            <button id="tabMapBtn" class="view-tab-btn active" onclick="switchMainView('map')">
+              🗺️ GISリアルタイム避難マップ (Tokyo Metro GIS)
+            </button>
+            <button id="tabTrajectoryBtn" class="view-tab-btn" onclick="switchMainView('trajectory')">
+              📈 3重モビリティ軌跡グラフ (Tri-Line Canvas)
+            </button>
+          </div>
+          <span id="trajectorySummaryMetric" class="card-badge" style="color: #10b981; font-weight: 700;">
+            リアルタイム運行・避難モニタリング
+          </span>
+        </div>
+
+        <!-- View 1: Leaflet GIS Interactive Map -->
+        <div id="gisMapView" class="map-view-container">
+          <div id="gisMapContainer"></div>
+        </div>
+
+        <!-- View 2: Canvas Tri-Line Trajectory -->
+        <div id="trajectoryView" class="chart-container" style="display: none;">
+          <canvas id="trajectoryCanvas"></canvas>
+          <div class="chart-legend">
+            <div class="legend-item">
+              <span class="legend-line" style="background: #64748b; border-bottom: 2px dashed #64748b;"></span>
+              <span id="legendL1Name">計画予算基準線 (Planned Budget Baseline)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-line" style="background: #ef4444;"></span>
+              <span id="legendL2Name">申請原案線 (Raw Request - グリーン車)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-line" style="background: #10b981;"></span>
+              <span id="legendL3Name">規程遵守線 (FinOps Governed - 普通車指定席)</span>
+            </div>
+            <div class="legend-item">
+              <span class="legend-line" style="background: rgba(16, 185, 129, 0.4); height: 8px;"></span>
+              <span id="legendShadeName">旅費規程遵守・予算削減面積 (Emerald Shading)</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Realtime Gateway Log Inspector -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🖥️ リアルタイム・ゲートウェイ管制コンソール (DevLogInspector)</span>
+          </div>
+          <span class="card-badge" style="font-family: var(--font-mono); color: #38bdf8;">HTTP / WEBHOOK STREAM</span>
+        </div>
+        <div id="logInspector" class="log-inspector">
+          <div class="log-line">
+            <span class="log-time">[READY]</span>
+            <span class="log-tag tag-system">SYSTEM</span>
+            <span class="log-msg">ResiliRoute Core Gateway initialized with Google Cloud TTS & Vertex AI Cache. Waiting for telemetry...</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Right Column: 3D Avatar & Status Cards -->
+    <div class="grid-col">
+      
+      <!-- Card: 3D Commander Avatar -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>👤 Gemini Live 3D 非常管制官アバター</span>
+          </div>
+          <span class="card-badge" style="color: #06b6d4;">Three.js WebGL & Google TTS</span>
+        </div>
+        <div class="avatar-view-box">
+          <div id="avatarBox" style="width: 100%; height: 100%;"></div>
+          <div class="avatar-speech-bubble">
+            <div style="font-size: 0.65rem; color: #38bdf8; font-weight: 700; margin-bottom: 2px;">DISPATCHER AUDIO LOG:</div>
+            <span id="avatarSpeechText">"ResiliRoute 非常管制司令室です。平時には旅費を経費削減し、有事には社員の命を守ります。"</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Shinjuku Bottleneck Gauge -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>🚨 新宿駅拠点 群衆ボトルネック指数 (Bottleneck Index)</span>
+          </div>
+          <span class="card-badge">Threshold 0.70</span>
+        </div>
+        <div class="bottleneck-box">
+          <div class="gauge-circle">
+            <span id="bottleneckVal" class="gauge-value" style="color: #10b981;">0.15</span>
+          </div>
+          <div class="gauge-details">
+            <div class="gauge-title">拠点駅群衆事故危険度 積分値</div>
+            <div id="bottleneckStatus" class="gauge-sub">安全収容範囲内 (正常通行)</div>
+            <div style="margin-top: 0.4rem; font-size: 0.7rem; color: #64748b;">
+              計算式: ∫(Inflow - Capacity) dτ / MaxSafeCapacity
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Card: Dispatch / Mobile Ticket Preview -->
+      <div class="glass-card">
+        <div class="card-header">
+          <div class="card-title">
+            <span>📱 モバイルSlackチケット＆電子決裁ディスパッチカード</span>
+          </div>
+          <span class="card-badge" style="color: #a78bfa;">1:1 Dispatch</span>
+        </div>
+        <div id="dispatchPreviewBox" class="dispatch-preview-box">
+          <p style="color: #64748b; font-size: 0.85rem;">
+            上部制御パネルのボタンを押すか、音声でお話しいただくと、リアルタイムSlack通知、電子決裁稟議書、および避難用QRコードがここに表示されます。
+          </p>
+        </div>
+      </div>
+
+    </div>
+
+  </main>
+
+  <script src="/static/js/gis_map.js?v=20261015_05"></script>
+  <script src="/static/js/trajectory_chart.js?v=20261015_05"></script>
+  <script src="/static/js/commander_avatar.js?v=20261015_05"></script>
+  <script src="/static/js/app.js?v=20261015_05"></script>
+</body>
+</html>
